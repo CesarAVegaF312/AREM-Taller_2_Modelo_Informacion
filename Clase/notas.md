@@ -12,7 +12,6 @@ Durante la sesión se trabajó en el **modelado de la base de datos para el proc
 - Se discutió cómo traducir el diagrama de procesos (BPMN) a un **modelo entidad-relación (ER)**.  
 - Se tomó la decisión de incluir entidades como **Cita, Paciente, Servicio, Slot de Disponibilidad, Factura, Reprogramación y Confirmación**, reflejando la lógica de negocio vista en el proceso.  
 - Se decidió que la **confirmación la realiza el paciente**, la **factura puede ser emitida a un paciente o a una empresa**, y que **una cita puede ser reprogramada múltiples veces**.  
-- Como herramientas se usaron **Lucidchart** para el diagrama ER digital y apoyo en la **presentación PDF de referencia** para la notación correcta.  
 - Se utilizó un **chat de apoyo** para generar un **modelo inicial en PlantUML**. Ese modelo básico sirvió como punto de partida y luego fue **reforzado y enriquecido con mis conocimientos propios**, hasta llegar a una versión más completa.  
 - Se alcanzó a construir la primera versión del **diagrama ER** con la entidad **Cita** y sus relaciones principales.  
 
