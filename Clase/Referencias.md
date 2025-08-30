@@ -3,24 +3,22 @@
 Este archivo contiene las fuentes consultadas para el desarrollo del taller, tanto para el componente técnico como para la investigación complementaria.
 
 ## 🔖 Taller
-_Taller X - [Nombre del Taller]_
+_Taller 2 - Modelado de información y diagramas ER_
 
 ---
 
 ## 📚 Referencias utilizadas
 
-1. Apellido, Nombre. *Título del libro o artículo*. Editorial, Año. URL o DOI.  
-2. Organización. *Especificación técnica o estándar consultado*. URL.  
-3. Sitio web institucional. "Título del artículo o página". [Enlace](https://ejemplo.com). Fecha de consulta: DD/MM/AAAA.  
-4. Otro recurso académico o técnico citado.
+1. OpenAI. *ChatGPT*. Fuente asistida por IA. Consulta: agosto 2025.  
+2. Universidad de La Sabana. (2025). *Presentación: Modelado de Información ERD*. Material de clase.  
 
 ---
 
 ## 📌 Recomendaciones
 
-- Usa formato APA o IEEE para citar.
-- No incluyas fuentes como Wikipedia si hay mejores alternativas.
-- Si usas inteligencia artificial para redactar o investigar, cítalo como "Fuente asistida por IA: ChatGPT, julio 2025".
+- Se usó **formato APA** para las citas.  
+- El uso de **ChatGPT** se reconoce explícitamente como apoyo en la construcción del modelo y redacción.  
+- La fuente principal del curso (presentación en PDF) se cita como material de clase.  
 
 ---
 
