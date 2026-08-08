@@ -114,4 +114,31 @@ Se etiqueta cada flujo con la información que transporta (p. ej. "Solicitud / C
 
 ---
 
+## Vista ArchiMate equivalente
+
+Este taller alimenta dos capas de ArchiMate a la vez (ver la [Guía de Notación ArchiMate](https://github.com/CesarAVegaF312/AREM-ArchiMate/blob/main/guia_notacion_archimate.md)): las entidades del ERD se convierten en **Data Objects** de la capa de Aplicación, y los sistemas del diagrama de contexto (ERP, Notificador, Sistema de Agendamiento) se convierten en **Application Components**.
+
+```mermaid
+flowchart TD
+    subgraph negocio["Negocio"]
+        paciente(["🧑 Paciente"])
+    end
+    subgraph aplicacion["Aplicación"]
+        agendamiento["Sistema de Agendamiento"]
+        cita[("Cita")]
+    end
+
+    paciente -->|"usa"| agendamiento
+    agendamiento -->|"accede a"| cita
+
+    classDef negocio fill:#ffff99,color:#000,stroke:#cccc00;
+    classDef aplicacion fill:#99ccff,color:#000,stroke:#3366cc;
+    class paciente negocio
+    class agendamiento,cita aplicacion
+```
+
+El ERD (`modelo-final-er.drawio`) sigue siendo donde vive el detalle de atributos y cardinalidades; aquí solo se resume la entidad como un Data Object que un Application Component usa — la misma relación **Access** que aparece en el Taller 3 al describir cómo un contenedor del C2 usa una base de datos.
+
+---
+
 _Esta guía hace parte del Taller 2 de Modelo de Información y Diagrama de Contexto — curso Arquitectura Empresarial, Universidad de La Sabana._
