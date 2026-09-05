@@ -47,6 +47,8 @@ Se etiqueta cada extremo de cada relación. Un paciente puede agendar muchas cit
 
 ![Comparación ERD](img/comparacion_erd.png)
 
+> 🖼️ Explore este ERD de forma interactiva (clic por entidad) en [`visualizacion-modelo-informacion.html`](visualizacion-modelo-informacion.html).
+
 ---
 
 ## Parte B — Diagrama de Contexto de Negocio

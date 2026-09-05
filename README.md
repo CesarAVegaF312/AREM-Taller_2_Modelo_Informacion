@@ -10,6 +10,12 @@ Modelar las entidades principales del dominio del cliente y los flujos de inform
 
 Antes de empezar a modelar, revise la [**Guía Paso a Paso: Modelo de Información y Diagrama de Contexto**](clase/guia_paso_a_paso_modelo_informacion.md). Incluye la notación de ambos diagramas, la metodología de 4 pasos para cada uno, un ejemplo completo construido paso a paso sobre el caso de la Clínica Salud Viva (Paciente, Cita, Médico, Especialidad, Factura para el ERD; actores y sistemas para el contexto), y una comparación de errores comunes vs. modelo corregido para cada tipo de diagrama.
 
+### 🖼️ Versión visual: Modelo de Información y Diagrama de Contexto
+
+[`clase/visualizacion-modelo-informacion.html`](clase/visualizacion-modelo-informacion.html) es una página interactiva autocontenida: un modelo entidad-relación clickeable (Paciente, Cita, Médico, Especialidad, Factura) que muestra los atributos, la clave primaria y las cardinalidades de la entidad que seleccione, un diagrama de contexto clickeable (actores, sistemas propios y la Aseguradora externa) que muestra el flujo etiquetado que conecta a cada elemento con el resto, y las metodologías de 4 pasos de ambos diagramas. GitHub no la renderiza interactiva desde la vista de archivo; para verla:
+- Descargue el archivo y ábralo con doble clic (funciona sin conexión, es HTML plano), o
+- Pegue esta URL en [htmlpreview.github.io](https://htmlpreview.github.io/): `https://raw.githubusercontent.com/CesarAVegaF312/AREM-Taller_2_Modelo_Informacion/main/clase/visualizacion-modelo-informacion.html`
+
 ## 🏥 Caso base de referencia: Clínica Salud Viva
 
 Durante este taller, todos los equipos trabajarán en clase con un caso base común antes de aplicarlo a su cliente real.
