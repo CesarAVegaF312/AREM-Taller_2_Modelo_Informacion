@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modelo de información y diagrama de contexto · Clínica Salud Viva · AREM</title>
+<style>
+  :root{
+    --paper:#F2F1EA;
+    --ink:#14263C;
+    --ink-soft:#3B4C5E;
+    --threat:#B4552B;
+    --control:#1C7150;
+    --steel:#5F7387;
+    --rule:#C9C6B8;
+    --card:#FBFAF6;
+    --grid:rgba(20,38,60,.055);
+    --mono: ui-monospace, "SFMono-Regular", "JetBrains Mono", Menlo, Consolas, monospace;
+    --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none !important} }
+
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--sans); font-size:17px; line-height:1.55;
+    background-image:
+      repeating-linear-gradient(0deg, var(--grid) 0 1px, transparent 1px 28px),
+      repeating-linear-gradient(90deg, var(--grid) 0 1px, transparent 1px 28px);
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+
+  /* ---------- estructura de lámina ---------- */
+  .sheet{border:1px solid var(--rule);background:rgba(251,250,246,.72);margin:34px 0;position:relative}
+  .sheet::before,.sheet::after{content:"";position:absolute;width:13px;height:13px;border:1px solid var(--steel);opacity:.5}
+  .sheet::before{top:-7px;left:-7px;border-right:0;border-bottom:0}
+  .sheet::after{bottom:-7px;right:-7px;border-left:0;border-top:0}
+  .sheet-inner{padding:34px}
+  @media(max-width:720px){ .sheet-inner{padding:20px} .wrap{padding:0 14px} }
+
+  .ref{font-family:var(--mono);font-size:11.5px;color:var(--steel);letter-spacing:.04em}
+
+  h1{font-size:clamp(34px,6vw,62px);line-height:1.02;letter-spacing:-.025em;font-weight:800;margin:.1em 0 .25em}
+  h2{font-size:clamp(24px,3.4vw,34px);line-height:1.12;letter-spacing:-.018em;font-weight:800;margin:0 0 6px}
+  h3{font-size:19px;letter-spacing:-.01em;font-weight:700;margin:0 0 6px}
+  .lede{font-size:19px;color:var(--ink-soft);max-width:62ch;margin:0}
+  p{max-width:70ch}
+  a{color:var(--threat)}
+
+  /* ---------- cabecera ---------- */
+  header.top{border-bottom:1px solid var(--rule);background:var(--ink);color:#EAF0F4}
+  header.top .wrap{display:flex;justify-content:space-between;align-items:baseline;padding-top:14px;padding-bottom:14px;gap:16px;flex-wrap:wrap}
+  header.top .ref{color:#8CA6BA}
+  nav.jump{display:flex;gap:18px;flex-wrap:wrap}
+  nav.jump a{color:#EAF0F4;text-decoration:none;font-family:var(--mono);font-size:12px;border-bottom:1px solid transparent;padding-bottom:2px}
+  nav.jump a:hover,nav.jump a:focus-visible{border-bottom-color:#E0A06B}
+
+  .hero{padding:52px 0 8px}
+  .hero h1{max-width:19ch}
+
+  /* ---------- diagrama ---------- */
+  .lab{display:grid;grid-template-columns:1.55fr 1fr;gap:0}
+  @media(max-width:940px){ .lab{grid-template-columns:1fr} }
+  .canvas{border-right:1px solid var(--rule);padding:22px}
+  @media(max-width:940px){ .canvas{border-right:0;border-bottom:1px solid var(--rule)} }
+  .panel{padding:22px;min-width:0}
+
+  .switch{display:flex;gap:0;margin-bottom:16px;border:1px solid var(--ink);width:fit-content}
+  .switch button{
+    font-family:var(--mono);font-size:12px;letter-spacing:.03em;padding:7px 14px;
+    background:transparent;border:0;color:var(--ink);cursor:pointer;border-right:1px solid var(--ink)
+  }
+  .switch button:last-child{border-right:0}
+  .switch button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+  .switch button:focus-visible{outline:2px solid var(--threat);outline-offset:2px}
+
+  svg.dfd{width:100%;height:auto;display:block}
+  svg.dfd text{font-family:var(--sans)}
+  svg.dfd .nlabel{font-size:12.5px;font-weight:700}
+  svg.dfd .nsub{font-size:9.5px;font-family:var(--mono)}
+  svg.dfd .zlabel{font-size:10px;font-family:var(--mono);fill:var(--steel);letter-spacing:.05em}
+  svg.dfd .flabel{font-size:10px;font-family:var(--mono)}
+  svg.dfd .verb{font-size:11px;font-weight:700;font-family:var(--mono);fill:var(--ink)}
+  svg.dfd .card{font-size:11px;font-weight:700;font-family:var(--mono);fill:var(--threat)}
+  .hit{cursor:pointer}
+  .hit:focus-visible{outline:2px solid var(--threat);outline-offset:2px}
+  .flowline{stroke:var(--steel);stroke-width:1.6;fill:none}
+  .flowline.sel{stroke:var(--threat);stroke-width:3}
+  .flowhit{stroke:transparent;stroke-width:16;fill:none;cursor:pointer}
+  .relnode{fill:var(--card);stroke:var(--ink);stroke-width:1.3}
+
+  /* ---------- panel de detalle ---------- */
+  .panel .empty{border:1px dashed var(--rule);padding:18px;color:var(--ink-soft);font-size:15px}
+  .flowtitle{font-family:var(--mono);font-size:12px;color:var(--threat);letter-spacing:.03em;margin-bottom:2px}
+  .kindtag{display:inline-block;font-family:var(--mono);font-size:11px;color:var(--steel);border:1px dashed var(--rule);padding:2px 8px;margin-bottom:14px}
+
+  .attr-row{display:flex;align-items:center;gap:10px;border-top:1px solid var(--rule);padding:10px 0}
+  .attr-row:first-child{border-top:2px solid var(--ink)}
+  .pk-badge,.plain-badge{font-family:var(--mono);font-size:11px;font-weight:700;flex:none;padding:2px 8px}
+  .pk-badge{color:var(--paper);background:var(--threat)}
+  .plain-badge{color:var(--steel);border:1px dashed var(--rule);font-weight:400}
+  .attr-row .an{font-size:15px}
+  .attr-row .al{font-size:12px;color:var(--steel);display:block;margin-top:1px}
+
+  .rel-item,.flow-item{border-top:1px solid var(--rule);padding:11px 0}
+  .rel-item:first-child,.flow-item:first-child{border-top:2px solid var(--ink)}
+  .rel-item p,.flow-item p{margin:0;font-size:14.5px;color:var(--ink-soft)}
+  .flow-item .dir{font-family:var(--mono);font-size:10.5px;color:var(--threat);letter-spacing:.03em;display:block;margin-bottom:3px}
+  .flow-item .peer{color:var(--ink);font-weight:700}
+
+  /* ---------- piezas ---------- */
+  .cols{display:grid;gap:20px}
+  .c2{grid-template-columns:repeat(2,1fr)}
+  @media(max-width:860px){ .c2{grid-template-columns:1fr} }
+  .block{border:1px solid var(--rule);background:var(--card);padding:18px}
+  .block.threatline{border-top:3px solid var(--threat)}
+  .block.controlline{border-top:3px solid var(--control)}
+  .block.inkline{border-top:3px solid var(--ink)}
+  .block p{font-size:15px;color:var(--ink-soft);margin:0}
+  .block ul{margin:0;padding-left:18px;font-size:14.5px;color:var(--ink-soft)}
+  .block li{margin-bottom:6px}
+
+  .steps{counter-reset:s;display:grid;gap:12px}
+  .step{display:flex;gap:14px;border:1px solid var(--rule);background:var(--card);padding:14px 16px}
+  .step .n{font-family:var(--mono);font-size:13px;color:var(--threat);flex:none;padding-top:2px}
+  .step p{margin:4px 0 0;font-size:15px;color:var(--ink-soft)}
+
+  .callout{border:1px solid var(--ink);background:var(--ink);color:#EAF0F4;padding:20px 22px}
+  .callout p{color:#C6D6E1;margin:0;max-width:78ch}
+  .callout strong{color:#E0A06B}
+
+  .note{font-size:14px;color:var(--steel);max-width:78ch}
+  footer{border-top:1px solid var(--rule);margin-top:40px;padding:26px 0 50px}
+  footer p{font-family:var(--mono);font-size:12px;color:var(--steel)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <span class="ref">AREM · Módulo 2 · Hoja de modelado de información</span>
+    <nav class="jump" aria-label="Secciones">
+      <a href="#laboratorio">Diagrama interactivo</a>
+      <a href="#metodologia-erd">Metodología ERD</a>
+      <a href="#metodologia-contexto">Metodología de contexto</a>
+      <a href="#checklist">Checklist</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section class="hero">
+    <p class="ref">Universidad de La Sabana · Arquitectura Empresarial</p>
+    <h1>De un sustantivo del negocio a una entidad con clave primaria.</h1>
+    <p class="lede">Modelar la información de un cliente es responder dos preguntas en orden: qué datos necesita guardar el negocio (el modelo entidad-relación) y con quién los intercambia (el diagrama de contexto). Esta hoja recorre las dos sobre el caso base del taller — la Clínica Salud Viva — con sus entidades, atributos, cardinalidades, actores y sistemas exactos. Empiece por el diagrama: haga clic en cualquier caja.</p>
+  </section>
+
+  <!-- ============ LABORATORIO ============ -->
+  <section class="sheet" id="laboratorio">
+    <div class="lab">
+      <div class="canvas">
+        <div class="switch" role="group" aria-label="Elegir diagrama">
+          <button type="button" data-case="erd" aria-pressed="true">Modelo E-R</button>
+          <button type="button" data-case="contexto" aria-pressed="false">Diagrama de Contexto</button>
+        </div>
+        <h2 id="caseName">Modelo entidad-relación</h2>
+        <p class="note" id="caseDesc" style="margin:2px 0 14px">Cinco entidades del dominio clínico: Paciente, Cita, Médico, Especialidad y Factura.</p>
+        <div id="diagram"></div>
+        <p class="note" id="caseNote" style="margin-top:12px">El círculo relleno junto a un atributo indica que es la <strong>clave primaria (PK)</strong> de la entidad; el resto son atributos descriptivos.</p>
+      </div>
+      <div class="panel">
+        <p class="ref">Análisis</p>
+        <div id="detail">
+          <div class="empty" id="emptyMsg">Seleccione una entidad del diagrama para ver sus atributos, cuál es la clave primaria, y sus relaciones y cardinalidades con las entidades vecinas.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ METODOLOGÍA ERD ============ -->
+  <section class="sheet" id="metodologia-erd">
+    <div class="sheet-inner">
+      <p class="ref">01 · Parte A</p>
+      <h2>Metodología del modelo E-R en 4 pasos</h2>
+      <p class="lede" style="margin-bottom:18px">Cuatro pasos, en este orden, sobre el mismo diagrama: primero se identifica qué existe, después qué guarda, después cómo se conecta, y solo al final cuánto de cada lado participa.</p>
+      <div class="steps">
+        <div class="step"><span class="n">Paso 1</span><div><h3>Identificar entidades</h3><p>Liste los sustantivos clave del dominio sobre los que necesita guardar información. En el caso base: Paciente, Cita, Médico, Especialidad y Factura.</p></div></div>
+        <div class="step"><span class="n">Paso 2</span><div><h3>Definir atributos</h3><p>Para cada entidad, anote sus propiedades y marque cuál es la clave primaria (PK): <code>CodPaciente</code>, <code>CodCita</code>, <code>CodMedico</code>, <code>CodEspecialidad</code> y <code>CodFactura</code> identifican de forma única a cada registro; el resto son atributos descriptivos.</p></div></div>
+        <div class="step"><span class="n">Paso 3</span><div><h3>Trazar relaciones</h3><p>Conecte las entidades que se relacionan entre sí y nombre cada relación con un verbo: el paciente <strong>agenda</strong> una cita, la cita es <strong>con</strong> un médico, es <strong>de</strong> una especialidad y <strong>genera</strong> una factura.</p></div></div>
+        <div class="step"><span class="n">Paso 4</span><div><h3>Asignar cardinalidad</h3><p>Etiquete cada extremo de cada relación. Un paciente puede agendar muchas citas (1:N), pero cada cita es con un solo médico (N:1) y de una sola especialidad (N:1), y genera exactamente una factura (1:1).</p></div></div>
+      </div>
+      <div class="callout" style="margin-top:20px">
+        <p><strong>Regla que no se negocia:</strong> toda relación N:N debe resolverse con una entidad asociativa antes de entregar el diagrama. Dejarla como N:N directa es uno de los errores que se califica en cero.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ METODOLOGÍA CONTEXTO ============ -->
+  <section class="sheet" id="metodologia-contexto">
+    <div class="sheet-inner">
+      <p class="ref">02 · Parte B</p>
+      <h2>Metodología del diagrama de contexto en 4 pasos</h2>
+      <p class="lede" style="margin-bottom:18px">El ERD responde qué datos existen; el diagrama de contexto responde quién los mueve. Se construye de afuera hacia adentro: primero quién rodea a la organización, después qué hay dentro de su límite.</p>
+      <div class="steps">
+        <div class="step"><span class="n">Paso 1</span><div><h3>Identificar actores externos</h3><p>¿Quién interactúa con la organización desde afuera? En el caso base: Paciente, Médico y Asistente Administrativo, más la Aseguradora como sistema externo.</p></div></div>
+        <div class="step"><span class="n">Paso 2</span><div><h3>Identificar sistemas internos</h3><p>Trace el límite organizacional y ubique dentro los sistemas propios: Sistema de Agendamiento, Notificador (SMS/Email) y ERP Clínico.</p></div></div>
+        <div class="step"><span class="n">Paso 3</span><div><h3>Trazar flujos de información</h3><p>Conecte actores y sistemas según quién envía información a quién, cruzando o no el límite organizacional según corresponda.</p></div></div>
+        <div class="step"><span class="n">Paso 4</span><div><h3>Etiquetar flujos y validar</h3><p>Indique qué información viaja por cada flujo (p. ej. "Solicitud / Confirmación de cita", "Validación de cobertura") y confirme que ningún actor o sistema quede sin conexión. Un flujo sin etiqueta no comunica nada.</p></div></div>
+      </div>
+      <div class="callout" style="margin-top:20px">
+        <p><strong>Lo que distingue a un tercero:</strong> la Aseguradora se dibuja con borde punteado porque es un sistema externo, fuera del control de la clínica — nunca se representa igual que un sistema propio.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CHECKLIST ============ -->
+  <section class="sheet" id="checklist">
+    <div class="sheet-inner">
+      <p class="ref">03 · Antes de entregar</p>
+      <h2>Checklist de autoevaluación</h2>
+      <p class="lede" style="margin-bottom:18px">La misma lista que exige la guía paso a paso, para revisar los dos diagramas antes de mostrarlos en clase.</p>
+      <div class="cols c2">
+        <div class="block inkline">
+          <h3>Modelo E-R</h3>
+          <ul>
+            <li>Cada entidad tiene al menos un atributo y una clave primaria (PK) marcada.</li>
+            <li>Toda relación tiene un verbo que la nombra.</li>
+            <li>Toda relación tiene su cardinalidad en ambos extremos (1:1, 1:N o N:N).</li>
+            <li>Las relaciones N:N están resueltas con una entidad asociativa.</li>
+            <li>No hay entidades desconectadas del resto del modelo.</li>
+          </ul>
+        </div>
+        <div class="block inkline">
+          <h3>Diagrama de contexto</h3>
+          <ul>
+            <li>El límite organizacional está dibujado y separa lo interno de lo externo.</li>
+            <li>Los sistemas de terceros se distinguen visualmente (borde punteado).</li>
+            <li>Cada flujo tiene una etiqueta que explica qué información se intercambia.</li>
+            <li>Ningún actor ni sistema queda sin al menos una conexión.</li>
+            <li>Los elementos están clasificados correctamente (un sistema no se modela como actor).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>AREM · Módulo 2 · Modelo de información y diagrama de contexto · Universidad de La Sabana</p>
+  </div>
+</footer>
+
+<script>
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+/* ============================================================
+   DATOS — Modelo E-R
+   ============================================================ */
+const ERD = {
+  nodes: [
+    {id:"paciente",     label:"PACIENTE",     x:20,  y:160, w:150, h:64},
+    {id:"cita",         label:"CITA",         x:330, y:160, w:150, h:64},
+    {id:"medico",       label:"MÉDICO",       x:650, y:40,  w:170, h:64},
+    {id:"especialidad", label:"ESPECIALIDAD", x:650, y:280, w:190, h:64},
+    {id:"factura",      label:"FACTURA",      x:330, y:340, w:150, h:64}
+  ],
+  rels: [
+    {id:"agenda", label:"agenda", path:"M170,192 L245,192 L330,192", rx:245, ry:192,
+      cardA:{x:200,y:180,t:"1"}, cardB:{x:298,y:180,t:"N"}},
+    {id:"con",    label:"con",    path:"M480,180 L560,132 L650,80",  rx:560, ry:132,
+      cardA:{x:500,y:165,t:"N"}, cardB:{x:610,y:100,t:"1"}},
+    {id:"de",     label:"de",     path:"M480,205 L560,252 L650,300", rx:560, ry:252,
+      cardA:{x:500,y:222,t:"N"}, cardB:{x:610,y:280,t:"1"}},
+    {id:"genera", label:"genera", path:"M405,224 L405,282 L405,340", rx:405, ry:282,
+      cardA:{x:415,y:245,t:"1"}, cardB:{x:415,y:325,t:"1"}}
+  ],
+  details: {
+    paciente:{
+      attrs:[{n:"CodPaciente",pk:true},{n:"Nombre",pk:false}],
+      rels:["1 <strong>Paciente</strong> agenda N <strong>Citas</strong> (relación «agenda»)."]
+    },
+    cita:{
+      attrs:[{n:"CodCita",pk:true},{n:"Fecha",pk:false}],
+      rels:[
+        "N <strong>Citas</strong> son agendadas por 1 <strong>Paciente</strong> (relación «agenda»).",
+        "N <strong>Citas</strong> son con 1 <strong>Médico</strong> (relación «con»).",
+        "N <strong>Citas</strong> son de 1 <strong>Especialidad</strong> (relación «de»).",
+        "1 <strong>Cita</strong> genera 1 <strong>Factura</strong> (relación «genera»)."
+      ]
+    },
+    medico:{
+      attrs:[{n:"CodMedico",pk:true},{n:"Nombre",pk:false}],
+      rels:["1 <strong>Médico</strong> atiende N <strong>Citas</strong> (relación «con»)."]
+    },
+    especialidad:{
+      attrs:[{n:"CodEspecialidad",pk:true},{n:"Nombre",pk:false}],
+      rels:["1 <strong>Especialidad</strong> agrupa N <strong>Citas</strong> (relación «de»)."]
+    },
+    factura:{
+      attrs:[{n:"CodFactura",pk:true},{n:"Valor",pk:false}],
+      rels:["1 <strong>Factura</strong> es generada por 1 <strong>Cita</strong> (relación «genera»)."]
+    }
+  }
+};
+
+/* ============================================================
+   DATOS — Diagrama de contexto
+   ============================================================ */
+const CTX = {
+  boundary:{x:430,y:20,w:610,h:400,label:"LÍMITE ORGANIZACIONAL · CLÍNICA SALUD VIVA"},
+  nodes: [
+    {id:"paciente",      label:"Paciente",                 sub:"actor externo",   kind:"actor",   x:20,   y:60,  w:190, h:64},
+    {id:"medico",        label:"Médico",                   sub:"actor externo",   kind:"actor",   x:20,   y:200, w:190, h:64},
+    {id:"asistente",     label:"Asistente Administrativo",  sub:"actor externo",   kind:"actor",   x:0,    y:350, w:230, h:70},
+    {id:"agendamiento",  label:"Sistema de Agendamiento",   sub:"sistema interno", kind:"sistema", x:460,  y:50,  w:200, h:64},
+    {id:"notificador",   label:"Notificador (SMS/Email)",   sub:"sistema interno", kind:"sistema", x:800,  y:50,  w:200, h:64},
+    {id:"erp",           label:"ERP Clínico",               sub:"sistema interno", kind:"sistema", x:460,  y:320, w:200, h:64},
+    {id:"aseguradora",   label:"Aseguradora",               sub:"tercero externo", kind:"tercero", x:1080, y:320, w:160, h:64}
+  ],
+  flows: [
+    {id:"f1", from:"paciente",     to:"agendamiento", label:"Solicitud / Confirmación de cita", bidir:true,  path:"M210,92  L460,82"},
+    {id:"f2", from:"medico",       to:"agendamiento", label:"Consulta disponibilidad",           bidir:false, path:"M210,232 L460,114"},
+    {id:"f3", from:"agendamiento", to:"notificador",  label:"Datos de la cita",                  bidir:false, path:"M660,82  L800,82"},
+    {id:"f4", from:"notificador",  to:"paciente",     label:"Notificación SMS / Email",          bidir:false, path:"M800,114 L210,102"},
+    {id:"f5", from:"asistente",    to:"erp",          label:"Valida datos del paciente",         bidir:false, path:"M230,385 L460,352"},
+    {id:"f6", from:"erp",          to:"aseguradora",  label:"Validación de cobertura",           bidir:true,  path:"M660,352 L1080,352"}
+  ]
+};
+const CTX_LABELS = {};
+CTX.nodes.forEach(n=>CTX_LABELS[n.id]=n.label);
+
+/* ============================================================
+   Render
+   ============================================================ */
+let current = "erd", selected = null;
+
+function midOf(path){
+  const nums = path.match(/-?\d+(\.\d+)?/g).map(Number);
+  const x1=nums[0], y1=nums[1], x2=nums[nums.length-2], y2=nums[nums.length-1];
+  return {x:(x1+x2)/2, y:(y1+y2)/2};
+}
+
+function renderDiagram(){
+  if(current==="erd") renderERD(); else renderContext();
+}
+
+function renderERD(){
+  let s = `<svg class="dfd" viewBox="0 0 900 430" role="img" aria-label="Modelo entidad-relación de la Clínica Salud Viva">
+    <defs>
+      <marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#5F7387"/>
+      </marker>
+    </defs>`;
+
+  ERD.rels.forEach(r=>{
+    s += `<path class="flowline" d="${r.path}"/>`;
+  });
+
+  ERD.rels.forEach(r=>{
+    s += `<polygon class="relnode" points="${r.rx-34},${r.ry} ${r.rx},${r.ry-20} ${r.rx+34},${r.ry} ${r.rx},${r.ry+20}"/>
+      <text class="verb" x="${r.rx}" y="${r.ry+4}" text-anchor="middle">${esc(r.label)}</text>
+      <text class="card" x="${r.cardA.x}" y="${r.cardA.y}" text-anchor="middle">${r.cardA.t}</text>
+      <text class="card" x="${r.cardB.x}" y="${r.cardB.y}" text-anchor="middle">${r.cardB.t}</text>`;
+  });
+
+  ERD.nodes.forEach(n=>{
+    const sel = selected===n.id;
+    s += `<g class="hit" tabindex="0" role="button" aria-pressed="${sel}" data-node="${n.id}" aria-label="Ver entidad ${esc(n.label)}">
+      <rect x="${n.x}" y="${n.y}" width="${n.w}" height="${n.h}" rx="2" fill="${sel?'#B4552B':'#14263C'}"/>
+      <text class="nlabel" x="${n.x+n.w/2}" y="${n.y+n.h/2+4}" text-anchor="middle" fill="#F2F1EA">${esc(n.label)}</text>
+    </g>`;
+  });
+
+  s += `</svg>`;
+  document.getElementById("diagram").innerHTML = s;
+  wireHits(selectERD);
+}
+
+function renderContext(){
+  const b = CTX.boundary;
+  let s = `<svg class="dfd" viewBox="0 0 1300 480" role="img" aria-label="Diagrama de contexto de la Clínica Salud Viva">
+    <defs>
+      <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#5F7387"/>
+      </marker>
+      <marker id="ahs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#B4552B"/>
+      </marker>
+    </defs>
+    <rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" fill="rgba(255,255,255,.45)" stroke="#B4552B" stroke-width="1.3" stroke-dasharray="6 5"/>
+    <text class="zlabel" x="${b.x+10}" y="${b.y+18}">${esc(b.label)}</text>`;
+
+  CTX.flows.forEach(f=>{
+    const sel = selected===f.id;
+    const marker = f.bidir ? (sel?'ahs':'ah') : (sel?'ahs':'ah');
+    s += `<path class="flowline ${sel?'sel':''}" d="${f.path}"
+      marker-end="url(#${marker})" ${f.bidir?`marker-start="url(#${marker})"`:''}/>`;
+  });
+
+  CTX.nodes.forEach(n=>{
+    const sel = selected===n.id;
+    let fill = "#14263C", txt = "#F2F1EA", sub = "#A9BCC9", dash = "";
+    if(n.kind==="actor"){ fill = "#5F7387"; }
+    if(n.kind==="tercero"){ fill = "#FBFAF6"; txt = "#14263C"; sub = "#5F7387"; dash = `stroke="#14263C" stroke-width="1.3" stroke-dasharray="5 4"`; }
+    if(sel){ fill = "#B4552B"; txt = "#F2F1EA"; sub = "#F2D9C9"; }
+    s += `<g class="hit" tabindex="0" role="button" aria-pressed="${sel}" data-node="${n.id}" aria-label="Ver ${esc(n.label)}">
+      <rect x="${n.x}" y="${n.y}" width="${n.w}" height="${n.h}" rx="4" fill="${fill}" ${dash}/>
+      <text class="nlabel" x="${n.x+n.w/2}" y="${n.y+n.h/2-2}" text-anchor="middle" fill="${txt}">${esc(n.label)}</text>
+      <text class="nsub" x="${n.x+n.w/2}" y="${n.y+n.h/2+14}" text-anchor="middle" fill="${sub}">${esc(n.sub)}</text>
+    </g>`;
+  });
+
+  CTX.flows.forEach(f=>{
+    const m = midOf(f.path);
+    const sel = selected===f.id;
+    const pw = Math.max(90, f.label.length*6.4+18);
+    s += `<g class="hit" tabindex="0" role="button" aria-pressed="${sel}" data-flow="${f.id}" aria-label="Analizar flujo: ${esc(f.label)}">
+      <path class="flowhit" d="${f.path}"/>
+      <rect x="${m.x-pw/2}" y="${m.y-11}" width="${pw}" height="20" fill="${sel?'#B4552B':'#F2F1EA'}" stroke="${sel?'#B4552B':'#C9C6B8'}"/>
+      <text class="flabel" x="${m.x}" y="${m.y+3}" text-anchor="middle" fill="${sel?'#F2F1EA':'#3B4C5E'}">${esc(f.label)}</text>
+    </g>`;
+  });
+
+  s += `</svg>`;
+  document.getElementById("diagram").innerHTML = s;
+  wireHits(selectContext, selectContextFlow);
+}
+
+function wireHits(onNode, onFlow){
+  document.querySelectorAll('[data-node]').forEach(el=>{
+    el.addEventListener("click", ()=>onNode(el.dataset.node));
+    el.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); onNode(el.dataset.node); } });
+  });
+  if(onFlow){
+    document.querySelectorAll('[data-flow]').forEach(el=>{
+      el.addEventListener("click", ()=>onFlow(el.dataset.flow));
+      el.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); onFlow(el.dataset.flow); } });
+    });
+  }
+}
+
+/* ---------- selección: ERD ---------- */
+function selectERD(id){
+  selected = id;
+  renderDiagram();
+  const d = ERD.details[id];
+  const n = ERD.nodes.find(x=>x.id===id);
+  let h = `<p class="flowtitle">${esc(n.label)}</p><span class="kindtag">Entidad</span>`;
+  d.attrs.forEach(a=>{
+    h += `<div class="attr-row">
+      <span class="${a.pk?'pk-badge':'plain-badge'}">${a.pk?'PK':'attr'}</span>
+      <span class="an">${esc(a.n)}${a.pk?'<span class="al">Clave primaria de la entidad</span>':''}</span>
+    </div>`;
+  });
+  h += `<p class="ref" style="margin:16px 0 4px">Relaciones y cardinalidad</p>`;
+  d.rels.forEach(r=>{
+    h += `<div class="rel-item"><p>${r}</p></div>`;
+  });
+  document.getElementById("detail").innerHTML = h;
+}
+
+/* ---------- selección: Contexto (nodo) ---------- */
+function selectContext(id){
+  selected = id;
+  renderDiagram();
+  const n = CTX.nodes.find(x=>x.id===id);
+  const kindLabel = {actor:"Actor externo", sistema:"Sistema interno", tercero:"Sistema de terceros"}[n.kind];
+  let h = `<p class="flowtitle">${esc(n.label)}</p><span class="kindtag">${kindLabel}</span>`;
+  const related = CTX.flows.filter(f=>f.from===id || f.to===id);
+  related.forEach(f=>{
+    let dir, peer, verb;
+    if(f.bidir){
+      dir = "Intercambia"; peer = (f.from===id? f.to : f.from);
+      verb = `Intercambia <span class="peer">"${esc(f.label)}"</span> con`;
+    } else if(f.from===id){
+      peer = f.to;
+      verb = `Envía <span class="peer">"${esc(f.label)}"</span> a`;
+    } else {
+      peer = f.from;
+      verb = `Recibe <span class="peer">"${esc(f.label)}"</span> de`;
+    }
+    h += `<div class="flow-item">
+      <span class="dir">${f.bidir?'↔ FLUJO BIDIRECCIONAL':(f.from===id?'→ SALIDA':'← ENTRADA')}</span>
+      <p>${verb} <strong>${esc(CTX_LABELS[peer])}</strong>.</p>
+    </div>`;
+  });
+  if(related.length===0){
+    h += `<div class="flow-item"><p>Sin flujos registrados en este diagrama.</p></div>`;
+  }
+  document.getElementById("detail").innerHTML = h;
+}
+
+/* ---------- selección: Contexto (flujo) ---------- */
+function selectContextFlow(id){
+  selected = id;
+  renderDiagram();
+  const f = CTX.flows.find(x=>x.id===id);
+  let h = `<p class="flowtitle">${esc(CTX_LABELS[f.from])} ${f.bidir?'↔':'→'} ${esc(CTX_LABELS[f.to])}</p>
+    <span class="kindtag">Flujo de información</span>
+    <div class="flow-item">
+      <span class="dir">${f.bidir?'BIDIRECCIONAL':'UNIDIRECCIONAL'}</span>
+      <p>Transporta: <span class="peer">"${esc(f.label)}"</span></p>
+    </div>
+    <div class="flow-item">
+      <p>${f.bidir
+        ? `<strong>${esc(CTX_LABELS[f.from])}</strong> y <strong>${esc(CTX_LABELS[f.to])}</strong> intercambian esta información en ambos sentidos.`
+        : `<strong>${esc(CTX_LABELS[f.from])}</strong> envía esta información a <strong>${esc(CTX_LABELS[f.to])}</strong>.`}</p>
+    </div>`;
+  document.getElementById("detail").innerHTML = h;
+}
+
+/* ---------- cambio de caso ---------- */
+const CASE_META = {
+  erd: {
+    name:"Modelo entidad-relación",
+    desc:"Cinco entidades del dominio clínico: Paciente, Cita, Médico, Especialidad y Factura.",
+    note:'El círculo relleno junto a un atributo indica que es la <strong>clave primaria (PK)</strong> de la entidad; el resto son atributos descriptivos.',
+    empty:"Seleccione una entidad del diagrama para ver sus atributos, cuál es la clave primaria, y sus relaciones y cardinalidades con las entidades vecinas."
+  },
+  contexto: {
+    name:"Diagrama de contexto de negocio",
+    desc:"Actores (Paciente, Médico, Asistente), sistemas propios (Agendamiento, Notificador, ERP) y la Aseguradora externa.",
+    note:'La línea punteada marca el <strong>límite organizacional</strong> de la Clínica Salud Viva. El recuadro de la Aseguradora tiene borde punteado porque es un sistema de terceros.',
+    empty:"Seleccione un actor, un sistema o una conexión del diagrama para ver el flujo etiquetado que lo une con el resto: qué envía y qué recibe."
+  }
+};
+
+document.querySelectorAll('[data-case]').forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    current = btn.dataset.case; selected = null;
+    document.querySelectorAll('[data-case]').forEach(b=>b.setAttribute("aria-pressed", String(b===btn)));
+    const meta = CASE_META[current];
+    document.getElementById("caseName").textContent = meta.name;
+    document.getElementById("caseDesc").textContent = meta.desc;
+    document.getElementById("caseNote").innerHTML = meta.note;
+    document.getElementById("detail").innerHTML = `<div class="empty">${meta.empty}</div>`;
+    renderDiagram();
+  });
+});
+
+/* arranque */
+renderDiagram();
+</script>
+</body>
+</html>
