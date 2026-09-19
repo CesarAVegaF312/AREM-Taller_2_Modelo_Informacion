@@ -1,26 +1,26 @@
-# 🛠️ Taller 2: Modelo de Información y Diagrama de Contexto
+# Taller 2: Modelo de Información y Diagrama de Contexto
 
-## 🎯 Objetivo
+## Objetivo
 
 Modelar las entidades principales del dominio del cliente y los flujos de información entre actores y sistemas, mediante un modelo entidad-relación (ERD) y un diagrama de contexto de negocio.
 
 ---
 
-## 📘 Guía paso a paso
+## Guía paso a paso
 
 Antes de empezar a modelar, revise la [**Guía Paso a Paso: Modelo de Información y Diagrama de Contexto**](clase/guia_paso_a_paso_modelo_informacion.md). Incluye la notación de ambos diagramas, la metodología de 4 pasos para cada uno, un ejemplo completo construido paso a paso sobre el caso de la Clínica Salud Viva (Paciente, Cita, Médico, Especialidad, Factura para el ERD; actores y sistemas para el contexto), y una comparación de errores comunes vs. modelo corregido para cada tipo de diagrama.
 
-### 🖼️ Versión visual: Modelo de Información y Diagrama de Contexto
+### Versión visual: Modelo de Información y Diagrama de Contexto
 
 [`clase/visualizacion-modelo-informacion.html`](clase/visualizacion-modelo-informacion.html) es una página interactiva autocontenida: un modelo entidad-relación clickeable (Paciente, Cita, Médico, Especialidad, Factura) que muestra los atributos, la clave primaria y las cardinalidades de la entidad que seleccione, un diagrama de contexto clickeable (actores, sistemas propios y la Aseguradora externa) que muestra el flujo etiquetado que conecta a cada elemento con el resto, y las metodologías de 4 pasos de ambos diagramas. GitHub no la renderiza interactiva desde la vista de archivo; para verla:
 - Descargue el archivo y ábralo con doble clic (funciona sin conexión, es HTML plano), o
 - Pegue esta URL en [htmlpreview.github.io](https://htmlpreview.github.io/): `https://raw.githubusercontent.com/CesarAVegaF312/AREM-Taller_2_Modelo_Informacion/main/clase/visualizacion-modelo-informacion.html`
 
-## 🏥 Caso base de referencia: Clínica Salud Viva
+## Caso base de referencia: Clínica Salud Viva
 
 Durante este taller, todos los equipos trabajarán en clase con un caso base común antes de aplicarlo a su cliente real.
 
-## 🧠 Contexto
+## Contexto
 
 La Clínica Salud Viva gestiona diversos flujos de información relacionados con pacientes, citas, médicos, facturación y servicios médicos. Estos datos están organizados en múltiples sistemas que deben interoperar entre sí, incluyendo un ERP clínico, una base de datos central de pacientes, y sistemas de terceros como aseguradoras. La correcta estructuración de las entidades de información y su contexto de operación es clave para lograr una arquitectura alineada con las necesidades clínicas, administrativas y regulatorias del sector salud.
 
@@ -35,7 +35,7 @@ La Clínica Salud Viva gestiona diversos flujos de información relacionados con
 
 ---
 
-## 🧪 Parte 1: Trabajo en Clase
+## Parte 1: Trabajo en Clase
 
 Durante la clase se espera que el equipo:
 
@@ -50,7 +50,7 @@ Siga la metodología de la [guía paso a paso](clase/guia_paso_a_paso_modelo_inf
 
 ---
 
-## 🧠 Parte 2: Aplicación al Cliente Real
+## Parte 2: Aplicación al Cliente Real
 
 Después de la clase, el equipo debe:
 
@@ -62,7 +62,7 @@ Después de la clase, el equipo debe:
 
 ---
 
-## 📁 Estructura esperada del repositorio
+## Estructura esperada del repositorio
 
 ```
 taller-02-modelo-informacion/
@@ -86,11 +86,11 @@ taller-02-modelo-informacion/
 
 ---
 
-## ⚠️ Errores comunes
+## Errores comunes
 
 Antes de entregar, compare sus dos diagramas contra los errores más frecuentes (entidades sin atributos, relaciones N:N sin resolver, sistemas externos dibujados igual que los internos, flujos sin etiquetar) documentados en las secciones [A.4](clase/guia_paso_a_paso_modelo_informacion.md#a4-errores-comunes-en-el-erd) y [B.4](clase/guia_paso_a_paso_modelo_informacion.md#b4-errores-comunes-en-el-diagrama-de-contexto) de la guía paso a paso.
 
-## 📤 Entregables
+## Entregables
 
 - Modelo ER final (`modelo-final-er.drawio`)
 - Diagrama de contexto final (`diagrama-contexto-final.drawio`)
@@ -99,7 +99,7 @@ Antes de entregar, compare sus dos diagramas contra los errores más frecuentes 
 
 ---
 
-## 📊 Rúbrica de Evaluación
+## Rúbrica de Evaluación
 
 | Criterio                            | Excelente (5)                                                        | Aceptable (3) / Insuficiente (1–2)                        |
 |-------------------------------------|-----------------------------------------------------------------------|------------------------------------------------------------|
@@ -110,6 +110,6 @@ Antes de entregar, compare sus dos diagramas contra los errores más frecuentes 
 
 ---
 
-## ✅ Licencia
+## Licencia
 
 Este taller hace parte del curso de Arquitectura Empresarial - Universidad de La Sabana. Uso académico bajo licencia MIT.

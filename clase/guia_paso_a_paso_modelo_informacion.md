@@ -1,4 +1,4 @@
-# 🧭 Guía Paso a Paso: Modelo de Información y Diagrama de Contexto
+# Guía Paso a Paso: Modelo de Información y Diagrama de Contexto
 
 Esta guía complementa el `README.md` del taller. Cubre los dos entregables de la Parte 1 y la Parte 2: el **modelo entidad-relación (ERD)** y el **diagrama de contexto de negocio**, ambos construidos sobre el caso base de la Clínica Salud Viva.
 
@@ -47,7 +47,7 @@ Se etiqueta cada extremo de cada relación. Un paciente puede agendar muchas cit
 
 ![Comparación ERD](img/comparacion_erd.png)
 
-> 🖼️ Explore este ERD de forma interactiva (clic por entidad) en [`visualizacion-modelo-informacion.html`](visualizacion-modelo-informacion.html).
+> Explore este ERD de forma interactiva (clic por entidad) en [`visualizacion-modelo-informacion.html`](visualizacion-modelo-informacion.html).
 
 ---
 
@@ -123,7 +123,7 @@ Este taller alimenta dos capas de ArchiMate a la vez (ver la [Guía de Notación
 ```mermaid
 flowchart TD
     subgraph negocio["Negocio"]
-        paciente(["🧑 Paciente"])
+        paciente(["Paciente"])
     end
     subgraph aplicacion["Aplicación"]
         agendamiento["Sistema de Agendamiento"]
