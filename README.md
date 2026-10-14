@@ -14,9 +14,7 @@ La presentación de la clase está en [`3. Modelado_Informacion_ERD_v2.pptx`](3.
 
 ### Versión visual: Modelo de Información y Diagrama de Contexto
 
-[`clase/visualizacion-modelo-informacion.html`](clase/visualizacion-modelo-informacion.html) es una página interactiva autocontenida: un modelo entidad-relación clickeable (Paciente, Cita, Médico, Especialidad, Factura) que muestra los atributos, la clave primaria y las cardinalidades de la entidad que seleccione, un diagrama de contexto clickeable (actores, sistemas propios y la Aseguradora externa) que muestra el flujo etiquetado que conecta a cada elemento con el resto, y las metodologías de 4 pasos de ambos diagramas. GitHub no la renderiza interactiva desde la vista de archivo; para verla:
-- Descargue el archivo y ábralo con doble clic (funciona sin conexión, es HTML plano), o
-- Pegue esta URL en [htmlpreview.github.io](https://htmlpreview.github.io/): `https://raw.githubusercontent.com/CesarAVegaF312/AREM-Taller_2_Modelo_Informacion/main/clase/visualizacion-modelo-informacion.html`
+[`clase/visualizacion-modelo-informacion.html`](clase/visualizacion-modelo-informacion.html) es una página interactiva autocontenida: un modelo entidad-relación clickeable (Paciente, Cita, Médico, Especialidad, Factura) que muestra los atributos, la clave primaria y las cardinalidades de la entidad que seleccione, un diagrama de contexto clickeable (actores, sistemas propios y la Aseguradora externa) que muestra el flujo etiquetado que conecta a cada elemento con el resto, y las metodologías de 4 pasos de ambos diagramas. Ábrala directamente en el navegador: **[ver la página interactiva](https://cesaravegaf312.github.io/AREM-Taller_2_Modelo_Informacion/clase/visualizacion-modelo-informacion.html)**. También puede descargar el archivo y abrirlo con doble clic; funciona sin conexión.
 
 ## Caso base de referencia: Clínica Salud Viva
 
