@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Modelo de información y diagrama de contexto · Clínica Salud Viva · AREM</title>
+<title>Modelo de información y diagrama de contexto · Fundación Salud Viva · AREM</title>
 <style>
   :root{
     --paper:#F2F1EA;
@@ -154,7 +154,7 @@
   <section class="hero">
     <p class="ref">Universidad de La Sabana · Arquitectura Empresarial</p>
     <h1>De un sustantivo del negocio a una entidad con clave primaria.</h1>
-    <p class="lede">Modelar la información de un cliente es responder dos preguntas en orden: qué datos necesita guardar el negocio (el modelo entidad-relación) y con quién los intercambia (el diagrama de contexto). Esta hoja recorre las dos sobre el caso base del taller — la Clínica Salud Viva — con sus entidades, atributos, cardinalidades, actores y sistemas exactos. Empiece por el diagrama: haga clic en cualquier caja.</p>
+    <p class="lede">Modelar la información de un cliente es responder dos preguntas en orden: qué datos necesita guardar el negocio (el modelo entidad-relación) y con quién los intercambia (el diagrama de contexto). Esta hoja recorre las dos sobre el caso base del taller — la Fundación Salud Viva — con sus entidades, atributos, cardinalidades, actores y sistemas exactos. Empiece por el diagrama: haga clic en cualquier caja.</p>
   </section>
 
   <!-- ============ LABORATORIO ============ -->
@@ -311,7 +311,7 @@ const ERD = {
    DATOS — Diagrama de contexto
    ============================================================ */
 const CTX = {
-  boundary:{x:430,y:20,w:610,h:400,label:"LÍMITE ORGANIZACIONAL · CLÍNICA SALUD VIVA"},
+  boundary:{x:430,y:20,w:610,h:400,label:"LÍMITE ORGANIZACIONAL · FUNDACIÓN SALUD VIVA"},
   nodes: [
     {id:"paciente",      label:"Paciente",                 sub:"actor externo",   kind:"actor",   x:20,   y:60,  w:190, h:64},
     {id:"medico",        label:"Médico",                   sub:"actor externo",   kind:"actor",   x:20,   y:200, w:190, h:64},
@@ -349,7 +349,7 @@ function renderDiagram(){
 }
 
 function renderERD(){
-  let s = `<svg class="dfd" viewBox="0 0 900 430" role="img" aria-label="Modelo entidad-relación de la Clínica Salud Viva">
+  let s = `<svg class="dfd" viewBox="0 0 900 430" role="img" aria-label="Modelo entidad-relación de la Fundación Salud Viva">
     <defs>
       <marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
         <path d="M0,0 L10,5 L0,10 z" fill="#5F7387"/>
@@ -382,7 +382,7 @@ function renderERD(){
 
 function renderContext(){
   const b = CTX.boundary;
-  let s = `<svg class="dfd" viewBox="0 0 1300 480" role="img" aria-label="Diagrama de contexto de la Clínica Salud Viva">
+  let s = `<svg class="dfd" viewBox="0 0 1300 480" role="img" aria-label="Diagrama de contexto de la Fundación Salud Viva">
     <defs>
       <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
         <path d="M0,0 L10,5 L0,10 z" fill="#5F7387"/>
@@ -524,7 +524,7 @@ const CASE_META = {
   contexto: {
     name:"Diagrama de contexto de negocio",
     desc:"Actores (Paciente, Médico, Asistente), sistemas propios (Agendamiento, Notificador, ERP) y la Aseguradora externa.",
-    note:'La línea punteada marca el <strong>límite organizacional</strong> de la Clínica Salud Viva. El recuadro de la Aseguradora tiene borde punteado porque es un sistema de terceros.',
+    note:'La línea punteada marca el <strong>límite organizacional</strong> de la Fundación Salud Viva. El recuadro de la Aseguradora tiene borde punteado porque es un sistema de terceros.',
     empty:"Seleccione un actor, un sistema o una conexión del diagrama para ver el flujo etiquetado que lo une con el resto: qué envía y qué recibe."
   }
 };

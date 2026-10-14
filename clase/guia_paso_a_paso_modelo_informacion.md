@@ -1,6 +1,6 @@
 # Guía Paso a Paso: Modelo de Información y Diagrama de Contexto
 
-Esta guía complementa el `README.md` del taller. Cubre los dos entregables de la Parte 1 y la Parte 2: el **modelo entidad-relación (ERD)** y el **diagrama de contexto de negocio**, ambos construidos sobre el caso base de la Clínica Salud Viva.
+Esta guía complementa el `README.md` del taller. Cubre los dos entregables de la Parte 1 y la Parte 2: el **modelo entidad-relación (ERD)** y el **diagrama de contexto de negocio**, ambos construidos sobre el caso base de la Fundación Salud Viva.
 
 ---
 
@@ -64,7 +64,7 @@ Se etiqueta cada extremo de cada relación. Un paciente puede agendar muchas cit
 3. **Trazar flujos de información** — conecte actores y sistemas según quién envía información a quién.
 4. **Etiquetar flujos y validar** — indique qué información viaja por cada flujo y confirme que ningún actor o sistema quede sin conexión.
 
-### B.3 Ejemplo guiado: contexto de la Clínica Salud Viva
+### B.3 Ejemplo guiado: contexto de la Fundación Salud Viva
 
 #### Paso 1 — Identificar actores externos
 
@@ -74,7 +74,7 @@ Se identifican el **Paciente**, el **Médico** y el **Asistente Administrativo**
 
 #### Paso 2 — Identificar sistemas internos
 
-Se traza el límite organizacional de la Clínica Salud Viva y se ubican dentro los tres sistemas propios: **Sistema de Agendamiento**, **Notificador (SMS/Email)** y **ERP Clínico**.
+Se traza el límite organizacional de la Fundación Salud Viva y se ubican dentro los tres sistemas propios: **Sistema de Agendamiento**, **Notificador (SMS/Email)** y **ERP Clínico**.
 
 ![Paso 2](img/contexto_paso2.png)
 
