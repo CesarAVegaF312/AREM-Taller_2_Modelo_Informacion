@@ -20,7 +20,7 @@ La presentación de la clase está en [`3. Modelado_Informacion_ERD_v2.pptx`](3.
 
 ## Caso base de referencia: Clínica Salud Viva
 
-Durante este taller, todos los equipos trabajarán en clase con un caso base común antes de aplicarlo a su cliente real.
+Durante este taller, todos los equipos trabajarán en clase con un caso base común antes de aplicarlo a su cliente real. La Clínica Salud Viva es la misma organización que la Fundación Salud Viva del Taller 0, vista aquí desde la información que mueve su proceso de citas.
 
 ## Contexto
 
