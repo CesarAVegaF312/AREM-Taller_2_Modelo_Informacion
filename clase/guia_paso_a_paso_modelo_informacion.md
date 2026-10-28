@@ -190,4 +190,46 @@ La validación sirve para encontrar huecos en el modelo, no para demostrar que e
 
 ---
 
+## Parte D — Análisis de caso real y panorama tecnológico (opcional)
+
+### D.1 Caso: los casos de COVID-19 que se perdieron en una hoja de cálculo (Inglaterra, 2020)
+
+**Qué pasó.** En octubre de 2020, Public Health England (PHE) informó que 15.841 casos positivos de COVID-19, registrados entre el 25 de septiembre y el 2 de octubre, no se incluyeron en el reporte diario. Los resultados de los laboratorios se cargaban en plantillas de Excel en el formato antiguo XLS, que admite unas 65.000 filas (el formato XLSX admite más de un millón). Cuando un archivo superaba el límite, las filas sobrantes se quedaban por fuera sin ningún aviso. Como esos casos no llegaron a tiempo al sistema de rastreo de contactos (Test and Trace), las personas expuestas se notificaron con días de retraso.
+
+**Qué falló, en el lenguaje de este taller.**
+
+| Elemento | Qué falló |
+|---|---|
+| Flujo de información (diagrama de contexto) | El flujo Laboratorios → PHE → Test and Trace no tenía control: nadie comparaba cuántos resultados salían de los laboratorios con cuántos llegaban al reporte. |
+| Entidad (ERD) | El modelo de "Resultado de prueba" existía en el papel, pero la tecnología donde vivía imponía un límite que el modelo no contemplaba. |
+| Regla de negocio | "Todo resultado positivo debe llegar a rastreo" no estaba implementada en ninguna parte: dependía de que el archivo no fuera demasiado grande. |
+
+**Preguntas para el análisis.**
+
+1. ¿En qué punto del diagrama de contexto habría puesto una conciliación de conteos (registros enviados contra registros recibidos)?
+2. En la Parte C, la base de datos rechaza lo que el ERD prohíbe y avisa con un `ERROR`. ¿Qué diferencia hay entre una herramienta que rechaza un dato y avisa, y una que lo descarta en silencio?
+3. ¿Hay algún flujo del cliente real que hoy dependa de archivos de Excel o CSV enviados entre áreas o entre organizaciones?
+
+**Fuentes.** [The Register, 5 de octubre de 2020](https://www.theregister.com/2020/10/05/test_and_trace/); [The Conversation, "Why you should never use Excel to count coronavirus cases"](https://theconversation.com/why-you-should-never-use-excel-to-count-coronavirus-cases-147681). Las fuentes no coinciden en si el límite que se alcanzó fue de filas o de columnas; lo que sí coincide es que los datos se perdieron sin aviso.
+
+### D.2 Panorama tecnológico: dónde vive el modelo de información
+
+El ERD es independiente de la tecnología, pero la decisión de dónde se guarda cada entidad es una decisión de arquitectura que se justifica en el Taller 7.
+
+| Tipo de tecnología | Ejemplos | Conviene cuando | No conviene cuando |
+|---|---|---|---|
+| Base de datos relacional | PostgreSQL, MySQL, SQL Server, Oracle | Las entidades tienen relaciones claras y reglas que se deben cumplir siempre (citas, facturas, pagos) | La estructura de los datos cambia de un registro a otro |
+| Base de datos documental | MongoDB, Firestore, Couchbase | Cada registro tiene una estructura variable (formularios distintos por especialidad, por ejemplo) | Hay muchas relaciones entre entidades y operaciones que deben ser todo o nada |
+| Hoja de cálculo | Excel, Google Sheets | Análisis puntual, prototipos, reportes para personas | Es el sistema de registro o el medio de intercambio entre sistemas (caso PHE) |
+| Intercambio entre organizaciones | APIs con esquema publicado (OpenAPI), estándares sectoriales como HL7 FHIR en salud | El flujo cruza el límite organizacional (aseguradoras, entes de control) | Se reemplaza por envío manual de archivos sin validación |
+| Herramientas de modelado | draw.io, dbdiagram.io, DBeaver, erwin Data Modeler | Documentar el ERD y, en el caso de DBeaver, generarlo desde una base existente para compararlo | |
+
+### D.3 Aplicarlo al cliente real
+
+1. Busque un caso público y documentado de pérdida, duplicación o mala calidad de datos en el sector del cliente.
+2. Analícelo con la [plantilla de análisis de caso](../plantillas/plantilla_analisis_caso.md) y guárdelo en `entrega/analisis-caso.md`.
+3. En la sección 5 de la plantilla, compare dos tecnologías del panorama anterior para la entidad más crítica del modelo del cliente.
+
+---
+
 _Esta guía hace parte del Taller 2 de Modelo de Información y Diagrama de Contexto — curso Arquitectura Empresarial, Universidad de La Sabana._
