@@ -1,0 +1,19 @@
+# Base de datos de validación del modelo de información (Taller 2).
+# Al iniciar por primera vez, PostgreSQL ejecuta en orden los scripts 01 y 02.
+#
+#   docker compose up -d
+#   docker compose exec db psql -U clinica -d clinica -f /validacion/03_validacion.sql
+#   docker compose down -v
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: clinica
+      POSTGRES_PASSWORD: clinica
+      POSTGRES_DB: clinica
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./01_esquema.sql:/docker-entrypoint-initdb.d/01_esquema.sql:ro
+      - ./02_datos.sql:/docker-entrypoint-initdb.d/02_datos.sql:ro
+      - ./03_validacion.sql:/validacion/03_validacion.sql:ro

@@ -64,6 +64,12 @@ Después de la clase, el equipo debe:
 
 ---
 
+## Validación técnica (opcional)
+
+Para comprobar que el ERD sostiene el negocio, el equipo puede pasarlo a una base de datos PostgreSQL en Docker y hacerle las preguntas del cliente. No es un ejercicio de programación: los scripts del caso base ya están listos en [`clase/validacion-tecnica/`](clase/validacion-tecnica/) y solo se adaptan al modelo del cliente. El procedimiento está en la [Parte C de la guía paso a paso](clase/guia_paso_a_paso_modelo_informacion.md#parte-c--validación-técnica-del-modelo-opcional). Lo que se encuentre (preguntas que el modelo no responde, reglas que faltan) se documenta en `entrega/informe.md`.
+
+---
+
 ## Estructura esperada del repositorio
 
 ```

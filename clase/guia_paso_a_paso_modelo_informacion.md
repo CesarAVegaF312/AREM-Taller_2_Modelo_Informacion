@@ -143,4 +143,51 @@ El ERD (`modelo-final-er.drawio`) sigue siendo donde vive el detalle de atributo
 
 ---
 
+## Parte C — Validación técnica del modelo (opcional)
+
+Un ERD puede verse bien en draw.io y aun así no sostener el negocio. Esta parte no es de programación: se trata de **comprobar el modelo**, pasándolo a una base de datos real y haciéndole las preguntas que el cliente le haría. No se escribe código nuevo: los scripts del caso base ya están en [`validacion-tecnica/`](validacion-tecnica/) y solo hay que adaptarlos al modelo del cliente.
+
+### C.1 Qué se necesita
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (o Docker Engine en Linux).
+- Opcional: [DBeaver Community](https://dbeaver.io/), para ver el diagrama que genera la propia base de datos.
+
+### C.2 Correr la validación del caso base
+
+Desde la carpeta `clase/validacion-tecnica/`:
+
+```bash
+docker compose up -d
+docker compose exec db psql -U clinica -d clinica -f /validacion/03_validacion.sql
+docker compose down -v   # al terminar: apaga y borra la base
+```
+
+| Archivo | Qué representa del ERD |
+|---|---|
+| [`01_esquema.sql`](validacion-tecnica/01_esquema.sql) | Cada entidad es una tabla, cada PK un `PRIMARY KEY` y cada relación una `FOREIGN KEY`. La cardinalidad se vuelve regla: `NOT NULL` en la llave foránea dice "obligatorio" y `UNIQUE` convierte un 1:N en 1:1. |
+| [`02_datos.sql`](validacion-tecnica/02_datos.sql) | Unos pocos registros de prueba, suficientes para que cada relación tenga ejemplos. |
+| [`03_validacion.sql`](validacion-tecnica/03_validacion.sql) | Bloque 1: preguntas del negocio que el modelo debe responder. Bloque 2: operaciones que el ERD prohíbe y que la base de datos debe rechazar. |
+
+El resultado esperado es que el Bloque 1 devuelva datos y que las cuatro instrucciones del Bloque 2 terminen en `ERROR`. Si alguna regla del Bloque 2 **no** falla, el modelo tiene una cardinalidad mal traducida.
+
+### C.3 Qué revela la validación
+
+La validación sirve para encontrar huecos en el modelo, no para demostrar que está perfecto. Por ejemplo, en el caso base:
+
+- **Una pregunta que el modelo no puede responder.** El diagrama de contexto tiene un flujo "Validación de cobertura" con la Aseguradora, pero el ERD no tiene ninguna entidad Aseguradora ni Cobertura. La pregunta "¿qué aseguradora cubre esta cita?" no tiene respuesta en la base de datos. Los dos diagramas no están alineados, y eso no se ve en draw.io.
+- **Una regla que no está en el ERD.** Nada impide registrar dos citas del mismo médico a la misma hora. Si el negocio lo prohíbe, falta una restricción, y vale la pena anotarla en el informe aunque no se dibuje en el ERD.
+
+### C.4 Aplicarlo al cliente real
+
+1. Copie la carpeta `validacion-tecnica/` a `entrega/validacion-tecnica/`.
+2. Reescriba `01_esquema.sql` con las entidades, atributos y relaciones de su `modelo-final-er.drawio` (una tabla por entidad, una llave foránea por relación).
+3. Cargue algunos datos inventados en `02_datos.sql` (nunca datos reales del cliente).
+4. En `03_validacion.sql`, escriba 3 preguntas reales del cliente y una regla por cada relación obligatoria o 1:1.
+5. Abra la base en DBeaver (servidor `localhost`, puerto `5432`, usuario y clave `clinica`), genere el diagrama ER y compárelo con el de draw.io.
+6. En `entrega/informe.md`, anote qué preguntas no pudo responder el modelo y qué cambió en el ERD por eso.
+
+> Si el cliente ya tiene una base de datos, **no** se conecte a ella ni copie datos reales: la validación se hace siempre sobre una base propia, con datos de prueba.
+
+---
+
 _Esta guía hace parte del Taller 2 de Modelo de Información y Diagrama de Contexto — curso Arquitectura Empresarial, Universidad de La Sabana._
