@@ -64,6 +64,14 @@ Después de la clase, el equipo debe:
 
 ---
 
+## Validación técnica, análisis de casos y tecnología (opcional)
+
+Para comprobar que el ERD sostiene el negocio, el equipo puede pasarlo a una base de datos PostgreSQL en Docker y hacerle las preguntas del cliente. No es un ejercicio de programación: los scripts del caso base ya están listos en [`clase/validacion-tecnica/`](clase/validacion-tecnica/) y solo se adaptan al modelo del cliente. El procedimiento está en la [Parte C de la guía paso a paso](clase/guia_paso_a_paso_modelo_informacion.md#parte-c--validación-técnica-del-modelo-opcional). Lo que se encuentre (preguntas que el modelo no responde, reglas que faltan) se documenta en `entrega/informe.md`.
+
+**Análisis de caso real y tecnología.** La [Parte D de la guía](clase/guia_paso_a_paso_modelo_informacion.md#parte-d--análisis-de-caso-real-y-panorama-tecnológico-opcional) analiza un caso real de pérdida de datos (los casos de COVID-19 que Public Health England perdió en una hoja de cálculo en 2020) y presenta el panorama de tecnologías donde puede vivir un modelo de información. El equipo analiza un caso del sector de su cliente con la [plantilla de análisis de caso](plantillas/plantilla_analisis_caso.md) en `entrega/analisis-caso.md`.
+
+---
+
 ## Estructura esperada del repositorio
 
 ```
