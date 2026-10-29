@@ -8,26 +8,24 @@ Modelar las entidades principales del dominio del cliente y los flujos de inform
 
 ## Guía paso a paso
 
-Antes de empezar a modelar, revise la [**Guía Paso a Paso: Modelo de Información y Diagrama de Contexto**](clase/guia_paso_a_paso_modelo_informacion.md). Incluye la notación de ambos diagramas, la metodología de 4 pasos para cada uno, un ejemplo completo construido paso a paso sobre el caso de la Clínica Salud Viva (Paciente, Cita, Médico, Especialidad, Factura para el ERD; actores y sistemas para el contexto), y una comparación de errores comunes vs. modelo corregido para cada tipo de diagrama.
+Antes de empezar a modelar, revise la [**Guía Paso a Paso: Modelo de Información y Diagrama de Contexto**](clase/guia_paso_a_paso_modelo_informacion.md). Incluye la notación de ambos diagramas, la metodología de 4 pasos para cada uno, un ejemplo completo construido paso a paso sobre el caso de la Fundación Salud Viva (Paciente, Cita, Médico, Especialidad, Factura para el ERD; actores y sistemas para el contexto), y una comparación de errores comunes vs. modelo corregido para cada tipo de diagrama.
 
-La presentación de la clase está en [`3. Modelado_Informacion_ERD_v2.pptx`](3.%20Modelado_Informacion_ERD_v2.pptx) (versión para estudiantes, sin notas del orador).
+La presentación de la clase está en [`2. Modelado_Informacion_ERD_v2.pptx`](2.%20Modelado_Informacion_ERD_v2.pptx) (versión para estudiantes, sin notas del orador).
 
 ### Versión visual: Modelo de Información y Diagrama de Contexto
 
-[`clase/visualizacion-modelo-informacion.html`](clase/visualizacion-modelo-informacion.html) es una página interactiva autocontenida: un modelo entidad-relación clickeable (Paciente, Cita, Médico, Especialidad, Factura) que muestra los atributos, la clave primaria y las cardinalidades de la entidad que seleccione, un diagrama de contexto clickeable (actores, sistemas propios y la Aseguradora externa) que muestra el flujo etiquetado que conecta a cada elemento con el resto, y las metodologías de 4 pasos de ambos diagramas. GitHub no la renderiza interactiva desde la vista de archivo; para verla:
-- Descargue el archivo y ábralo con doble clic (funciona sin conexión, es HTML plano), o
-- Pegue esta URL en [htmlpreview.github.io](https://htmlpreview.github.io/): `https://raw.githubusercontent.com/CesarAVegaF312/AREM-Taller_2_Modelo_Informacion/main/clase/visualizacion-modelo-informacion.html`
+[`clase/visualizacion-modelo-informacion.html`](clase/visualizacion-modelo-informacion.html) es una página interactiva autocontenida: un modelo entidad-relación clickeable (Paciente, Cita, Médico, Especialidad, Factura) que muestra los atributos, la clave primaria y las cardinalidades de la entidad que seleccione, un diagrama de contexto clickeable (actores, sistemas propios y la Aseguradora externa) que muestra el flujo etiquetado que conecta a cada elemento con el resto, y las metodologías de 4 pasos de ambos diagramas. Ábrala directamente en el navegador: **[ver la página interactiva](https://cesaravegaf312.github.io/AREM-Taller_2_Modelo_Informacion/clase/visualizacion-modelo-informacion.html)**. También puede descargar el archivo y abrirlo con doble clic; funciona sin conexión.
 
-## Caso base de referencia: Clínica Salud Viva
+## Caso base de referencia: Fundación Salud Viva
 
 Durante este taller, todos los equipos trabajarán en clase con un caso base común antes de aplicarlo a su cliente real. La Clínica Salud Viva es la misma organización que la Fundación Salud Viva del Taller 0, vista aquí desde la información que mueve su proceso de citas.
 
 ## Contexto
 
-La Clínica Salud Viva gestiona diversos flujos de información relacionados con pacientes, citas, médicos, facturación y servicios médicos. Estos datos están organizados en múltiples sistemas que deben interoperar entre sí, incluyendo un ERP clínico, una base de datos central de pacientes, y sistemas de terceros como aseguradoras. La correcta estructuración de las entidades de información y su contexto de operación es clave para lograr una arquitectura alineada con las necesidades clínicas, administrativas y regulatorias del sector salud.
+La Fundación Salud Viva gestiona diversos flujos de información relacionados con pacientes, citas, médicos, facturación y servicios médicos. Estos datos están organizados en múltiples sistemas que deben interoperar entre sí, incluyendo un ERP clínico, una base de datos central de pacientes, y sistemas de terceros como aseguradoras. La correcta estructuración de las entidades de información y su contexto de operación es clave para lograr una arquitectura alineada con las necesidades clínicas, administrativas y regulatorias del sector salud.
 
 **Descripción del caso:**
-- Clínica Salud Viva ofrece servicios médicos presenciales y virtuales.
+- Fundación Salud Viva ofrece servicios médicos presenciales y virtuales.
 - El sistema permite a los pacientes agendar citas, los médicos gestionar su agenda, y el personal validar datos con aseguradoras.
 
 **Elementos para modelar en clase:**
@@ -56,7 +54,7 @@ Siga la metodología de la [guía paso a paso](clase/guia_paso_a_paso_modelo_inf
 
 Después de la clase, el equipo debe:
 
-- Adaptar el modelo de información al dominio del cliente real asignado (**no puede ser el mismo dominio de la Clínica Salud Viva** — debe corresponder al negocio del cliente).
+- Adaptar el modelo de información al dominio del cliente real asignado (**no puede ser el mismo dominio de la Fundación Salud Viva** — debe corresponder al negocio del cliente).
 - Aplicar los mismos 4 pasos de cada metodología (ERD y diagrama de contexto) a ese dominio.
 - Elaborar un modelo ER limpio en `entrega/modelo-final-er.drawio` y un diagrama de contexto ajustado en `entrega/diagrama-contexto-final.drawio`.
 - Redactar el informe en `entrega/informe.md` usando la [plantilla de informe del taller](plantillas/plantilla_informe_taller.md); explicar las decisiones tomadas y las diferencias con el caso base.
